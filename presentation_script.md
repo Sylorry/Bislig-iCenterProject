@@ -1,0 +1,3 @@
+"Good [afternoon], I'm [Project Manager Name], the project manager for this presentation, together with my team, Were excited to present the **Bislig iCenter Smart Kiosk and Inventory System** -
+
+this system provides a complete solution for technology retail businesses, such as the Bislig iCenter. It combines backend management with an engaging customer kiosk interface, ensuring efficient operations and enhanced customer experience."
