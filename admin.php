@@ -78,15 +78,193 @@
       /* Enhanced Sidebar */
       #sidebar {
         background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-        box-shadow: 8px 0 25px rgba(0, 0, 0, 0.15);
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 12px 0 32px 0 rgba(0,0,0,0.18), 0 1.5px 0 0 rgba(255,255,255,0.08) inset;
+        border-right: 2px solid rgba(255,255,255,0.12);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        backdrop-filter: blur(12px) saturate(1.2);
+        -webkit-backdrop-filter: blur(12px) saturate(1.2);
+        /* glassmorphism */
+        background-color: rgba(26,26,26,0.85);
+        transform: translateX(0);
+        will-change: transform, width;
+      }
+      #sidebar::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        box-shadow: 0 8px 32px 0 rgba(0,0,0,0.18);
+      }
+      #sidebar.collapsed {
+        width: 80px;
+        min-width: 80px;
+        max-width: 80px;
+        box-shadow: 8px 0 32px 0 rgba(0,0,0,0.18);
+        background: linear-gradient(180deg, #1a1a1a 0%, #23232d 50%, #1a1a1a 100%);
+        background-color: rgba(26,26,26,0.92);
+        border-right: none;
+        transform: translateX(0);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Add sliding animation for sidebar */
+      #sidebar.sliding {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Ensure main content slides smoothly */
+      #mainContent {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: margin-left;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+        position: relative;
+      }
+      
+      /* Prevent any gaps during transitions */
+      #mainContent::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        z-index: -1;
+        pointer-events: none;
+      }
+      
+      /* Ensure perfect alignment between sidebar and main content */
+      #sidebar, #mainContent {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        perspective: 1000px;
+      }
+      
+      /* Prevent any white spaces during transitions */
+      .flex {
+        overflow-x: hidden;
+      }
+      
+      /* Prevent white flash during sidebar transitions */
+      #mainContent.sliding {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Smooth header transitions */
+      header {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform, margin-left;
+      }
+      
+      /* Ensure smooth background transition */
+      body {
+        overflow-x: hidden;
+      }
+      #sidebar.collapsed::after {
+        display: none;
+      }
+      #sidebar .nav-icon {
+        transition: box-shadow 0.3s, transform 0.3s, background 0.3s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      }
+      #sidebar .nav-item:hover .nav-icon {
+        box-shadow: 0 0 0 4px rgba(99,102,241,0.10), 0 4px 16px rgba(99,102,241,0.18);
+        background: linear-gradient(135deg,rgba(99,102,241,0.10),rgba(236,72,153,0.10));
+        transform: scale(1.13) rotate(-3deg);
+      }
+      #sidebar.collapsed .nav-item {
+        justify-content: center;
+        padding: 1.2rem 0.5rem;
+        min-height: 3.2rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        box-shadow: none;
+        background: transparent;
+      }
+      #sidebar.collapsed .nav-icon {
+        margin-right: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        border: none;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.07);
+        border-radius: 12px;
+      }
+      
+      /* Different colors for each icon in collapsed mode */
+      #sidebar.collapsed .nav-item:nth-child(1) .nav-icon {
+        background: rgba(59, 130, 246, 0.2);
+      }
+      #sidebar.collapsed .nav-item:nth-child(2) .nav-icon {
+        background: rgba(34, 197, 94, 0.2);
+      }
+      #sidebar.collapsed .nav-item:nth-child(3) .nav-icon {
+        background: rgba(245, 158, 11, 0.2);
+      }
+      #sidebar.collapsed .nav-item:nth-child(4) .nav-icon {
+        background: rgba(168, 85, 247, 0.2);
+      }
+      #sidebar.collapsed .nav-item:hover .nav-icon {
+        border: none;
+        border-radius: 12px;
+        box-shadow: none;
+        background: transparent;
+        transform: none;
+        color: #9ca3af;
+      }
+      #sidebar.collapsed .sidebar-text {
+        opacity: 0;
+        transform: translateX(-24px);
+        pointer-events: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 0;
+        overflow: hidden;
+      }
+      #sidebar.collapsed .nav-item,
+      #sidebar.collapsed a {
+        position: relative;
+      }
+      #sidebar.collapsed .nav-item::after,
+      #sidebar.collapsed a::after {
+        content: attr(data-title);
+        position: absolute;
+        left: 110%;
+        top: 50%;
+        transform: translateY(-50%) scale(0.95);
+        background: rgba(30, 41, 59, 0.92);
+        color: #fff;
+        padding: 0.55rem 1rem;
+        border-radius: 0.75rem;
+        font-size: 1rem;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s, transform 0.3s;
+        margin-left: 0.7rem;
+        z-index: 1000;
+        box-shadow: 0 4px 24px rgba(30,41,59,0.18);
+      }
+      #sidebar.collapsed .nav-item:hover::after,
+      #sidebar.collapsed a:hover::after {
+        opacity: 1;
+        transform: translateY(-50%) scale(1);
       }
       #sidebar a {
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 12px;
-        margin: 6px 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border-radius: 16px;
+        margin: 8px 0;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 1.5px 0 0 rgba(255,255,255,0.04) inset;
+      }
+      #sidebar.collapsed a {
+        box-shadow: none;
+        border: none;
       }
       #sidebar a::before {
         content: '';
@@ -102,14 +280,14 @@
         left: 100%;
       }
       #sidebar a:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateX(8px);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background: rgba(255,255,255,0.13);
+        transform: translateX(10px) scale(1.03);
+        box-shadow: 0 4px 18px rgba(99,102,241,0.10);
       }
       #sidebar a.active {
-        background: linear-gradient(135deg, rgba(79, 70, 229, 0.3), rgba(99, 102, 241, 0.2));
-        color: white;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.32), rgba(99, 102, 241, 0.22));
+        color: #fff;
+        box-shadow: 0 4px 18px rgba(99,102,241,0.18);
       }
       
       /* Enhanced Header */
@@ -523,18 +701,48 @@
         color: #fff !important;
       }
       
-      /* Add transition for sidebar toggle button */
-      #sidebarToggle {
-        background: #f3f4f6; /* light gray */
-        border: 2px solid #e5e7eb;
-        color: #1a1a1a;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        top: 3rem; /* Move the button a little higher */
+      /* Enhanced Sidebar Toggle Buttons */
+      #sidebarToggle, #sidebarToggleOuter {
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        border: 2px solid rgba(255,255,255,0.18);
+        background: rgba(26,26,26,0.92);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
-      #sidebarToggle.sidebar-closed {
-        background: #f3f4f6;
-        border: 2px solid #e5e7eb;
-        color: #1a1a1a;
+      #sidebarToggle:hover, #sidebarToggleOuter:hover {
+        background: rgba(99,102,241,0.18);
+        border-color: rgba(99,102,241,0.32);
+        transform: scale(1.12);
+        box-shadow: 0 6px 24px rgba(99,102,241,0.18);
+      }
+      
+      /* Toggle button visibility management */
+      #sidebarToggleOuter {
+        display: block;
+      }
+      
+      #sidebarToggle {
+        display: block;
+      }
+      
+      /* Hide outer toggle when sidebar is expanded */
+      .sidebar-open #sidebarToggleOuter {
+        display: none;
+      }
+      
+      /* Hide inner toggle when sidebar is collapsed */
+      .sidebar-closed #sidebarToggle {
+        display: none;
+      }
+      
+      /* Prevent white flash during sidebar transitions */
+      #mainContent.sliding {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      
+      /* Ensure smooth background transition */
+      body {
+        overflow-x: hidden;
       }
     </style>
   </head>
@@ -548,57 +756,80 @@
           >
         <div class="p-6 flex items-center justify-center relative">
           <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
-</div>
+          
+          <!-- Sidebar Toggle Button -->
+          <button id="sidebarToggle" class="absolute top-4 right-4 z-50 text-white bg-[#1a1a1a] border-2 border-white p-1 rounded-md shadow-md focus:outline-none transition-all duration-300">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
             <div class="flex-1 overflow-y-auto">
               <nav class="px-4 py-2">
             <div class="space-y-2">
                   <a
                     href="add_products.php"
-                class="flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group"
+                class="nav-item flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group"
+                data-title="Add Product"
                   >
-                <div class="w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300">
+                <div class="nav-icon w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg group-hover:from-blue-500/30 group-hover:to-purple-500/30 transition-all duration-300">
                   <i class="ri-add-line text-lg"></i>
                     </div>
-                <span class="group-hover:translate-x-1 transition-transform duration-300">Add Product</span>
+                <span class="sidebar-text group-hover:translate-x-1 transition-transform duration-300">Add Product</span>
                   </a>
                   <a
                     href="view_products.php"
-                class="flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group">
-                <div class="w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg group-hover:from-green-500/30 group-hover:to-emerald-500/30 transition-all duration-300">
+                class="nav-item flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group"
+                data-title="View Products">
+                <div class="nav-icon w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-lg group-hover:from-green-500/30 group-hover:to-emerald-500/30 transition-all duration-300">
                   <i class="ri-grid-line text-lg"></i>
                     </div>
-                <span class="group-hover:translate-x-1 transition-transform duration-300">View Products</span>
+                <span class="sidebar-text group-hover:translate-x-1 transition-transform duration-300">View Products</span>
                   </a>
                   <a
                     href="inventory_stocks.php"
-                class="flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group">
-                <div class="w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg group-hover:from-orange-500/30 group-hover:to-red-500/30 transition-all duration-300">
+                class="nav-item flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group"
+                data-title="Inventory Stocks">
+                <div class="nav-icon w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg group-hover:from-orange-500/30 group-hover:to-red-500/30 transition-all duration-300">
                   <i class="ri-stack-line text-lg"></i>
                     </div>
-                <span class="group-hover:translate-x-1 transition-transform duration-300">Inventory Stocks</span>
+                <span class="sidebar-text group-hover:translate-x-1 transition-transform duration-300">Inventory Stocks</span>
                   </a>
                   <a
                     href="reserved.php"
-                class="flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group">
-                <div class="w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300">
+                class="nav-item flex items-center px-4 py-4 text-base font-medium rounded-xl text-gray-300 hover:bg-white/10 hover:border hover:border-white/20 transition-all duration-300 group"
+                data-title="Reservations">
+                <div class="nav-icon w-8 h-8 flex items-center justify-center mr-4 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg group-hover:from-purple-500/30 group-hover:to-pink-500/30 transition-all duration-300">
                   <i class="ri-calendar-line text-lg"></i>
                     </div>
-                <span class="group-hover:translate-x-1 transition-transform duration-300">Reservations</span>
+                <span class="sidebar-text group-hover:translate-x-1 transition-transform duration-300">Reservations</span>
                   </a>
             </div>
               </nav>
             </div>
         <div class="p-4 border-t border-white/10">
               <button id="logoutButton" type="button"
-            class="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl hover:from-red-600 hover:to-red-700 whitespace-nowrap transition-all duration-300 group shadow-lg hover:shadow-xl">
-            <div class="w-6 h-6 flex items-center justify-center mr-3 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
+            class="nav-item flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-red-600 rounded-xl hover:from-red-600 hover:to-red-700 whitespace-nowrap transition-all duration-300 group shadow-lg hover:shadow-xl"
+            data-title="Log Out">
+            <div class="nav-icon w-6 h-6 flex items-center justify-center mr-3 bg-white/20 rounded-lg group-hover:bg-white/30 transition-all duration-300">
               <i class="ri-logout-box-line text-lg"></i>
                 </div>
-            <span class="group-hover:translate-x-1 transition-transform duration-300">Log Out</span>
+            <span class="sidebar-text group-hover:translate-x-1 transition-transform duration-300">Log Out</span>
               </button>
 
                         <!-- Enhanced Logout Confirmation Modal -->
-              <div id="logoutModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-50">
+              <div id="logoutModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center hidden z-[9999]">
                 <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full mx-4 transform transition-all duration-300 scale-95 opacity-0" id="modalContent">
                   <div class="text-center">
                     <div class="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -616,23 +847,23 @@
         </div>
       </div>
       
-      <!-- Sidebar Toggle Button -->
-          <button id="sidebarToggle" class="fixed left-6 z-50 text-white bg-[#1a1a1a] border-2 border-white p-1 rounded-md shadow-md focus:outline-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+                <!-- Sidebar Toggle Button (Always Visible) -->
+      <button id="sidebarToggleOuter" class="fixed top-4 left-4 z-50 text-white bg-[#1a1a1a] border-2 border-white p-2 rounded-md shadow-md focus:outline-none transition-all duration-300 hover:scale-110 hover:shadow-lg">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        </svg>
+      </button>
       
           <!-- Main content -->
           <div id="mainContent" class="flex-1 ml-64 transition-all duration-300">
@@ -640,7 +871,7 @@
         <header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
           <div class="flex justify-between items-center px-8 py-6 space-x-4">
             <div class="flex items-center space-x-6">
-              <div class="ml-12 mr-10 text-sm text-white flex items-center space-x-6">
+              <div class="ml-2 mr-10 text-sm text-white flex items-center space-x-6">
                 <img src="images/iCenter.png" alt="Logo" class="h-20 w-auto border-2 border-white rounded-lg shadow-lg mr-4" />
                 <div class="flex flex-col space-y-1">
                   <span class="font-semibold text-lg"><?php echo date('l, F j, Y'); ?></span>
@@ -967,24 +1198,56 @@
 
           // Sidebar toggle functionality
           const sidebarToggle = document.getElementById("sidebarToggle");
+          const sidebarToggleOuter = document.getElementById("sidebarToggleOuter");
           const sidebar = document.getElementById("sidebar");
           const mainContent = document.getElementById("mainContent");
+          const body = document.body;
 
-          sidebarToggle.addEventListener("click", () => {
-            sidebar.classList.toggle("-ml-64");
-            const closed = sidebar.classList.contains("-ml-64");
-            if (closed) {
-              mainContent.classList.remove("ml-64");
-              mainContent.classList.add("ml-0");
-              sidebarToggle.style.left = "1.5rem";
-              sidebarToggle.classList.add("sidebar-closed");
-            } else {
-              mainContent.classList.remove("ml-0");
-              mainContent.classList.add("ml-64");
-              sidebarToggle.style.left = "16rem";
-              sidebarToggle.classList.remove("sidebar-closed");
+          function toggleSidebar() {
+            // Immediately add sliding class for instant response
+            sidebar.classList.add("sliding");
+            mainContent.classList.add("sliding");
+            
+            // Get header element and add sliding class immediately
+            const header = document.querySelector('header');
+            if (header) {
+              header.classList.add("sliding");
             }
-          });
+            
+            // Toggle collapsed state immediately
+            sidebar.classList.toggle("collapsed");
+            const collapsed = sidebar.classList.contains("collapsed");
+            
+            // Apply changes immediately without delay
+            if (collapsed) {
+              mainContent.classList.remove("ml-64");
+              mainContent.classList.add("ml-20");
+              body.classList.remove("sidebar-open");
+              body.classList.add("sidebar-closed");
+            } else {
+              mainContent.classList.remove("ml-20");
+              mainContent.classList.add("ml-64");
+              body.classList.remove("sidebar-closed");
+              body.classList.add("sidebar-open");
+            }
+            
+            // Remove sliding class after animation completes
+            setTimeout(() => {
+              sidebar.classList.remove("sliding");
+              mainContent.classList.remove("sliding");
+              if (header) {
+                header.classList.remove("sliding");
+              }
+            }, 300);
+          }
+
+          sidebarToggle.addEventListener("click", toggleSidebar);
+          sidebarToggleOuter.addEventListener("click", toggleSidebar);
+          
+          // Initialize sidebar state (collapsed by default)
+          sidebar.classList.add("collapsed");
+          mainContent.classList.add("ml-20");
+          body.classList.add("sidebar-closed");
 
       // Category click handler
       function handleCategoryClick(event) {

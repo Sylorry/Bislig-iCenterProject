@@ -16,7 +16,7 @@ try {
     }
     
     // Validate required fields
-    $required_fields = ['product', 'category_id', 'product_id', 'product', 'brand', 'model', 'storage', 'purchase_price', 'selling_price', 'status', 'stock_quantity'];
+    $required_fields = ['category_id', 'product_id', 'brand', 'model', 'storage', 'purchase_price', 'selling_price', 'status', 'stock_quantity'];
     foreach ($required_fields as $field) {
         if (empty($data[$field])) {
             throw new Exception("Missing required field: $field");
@@ -49,7 +49,7 @@ try {
     $insert_stmt->execute([
         $data['category_id'],
         $data['product_id'],
-        $data['product'],
+        $data['category_name'],
         $data['brand'],
         $data['model'],
         $data['storage'],

@@ -31,10 +31,18 @@ require_once 'db.php';
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<link
+  href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+/>
 <style>
   /* Reset & base */
   * {
@@ -43,8 +51,8 @@ require_once 'db.php';
   /* Body styling */
   body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
     color: #333;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
@@ -66,8 +74,8 @@ require_once 'db.php';
     display: flex;
     flex-direction: column;
     gap: 24px;
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1400px;
+    margin: 40px auto;
     padding: 40px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 20px;
@@ -84,13 +92,22 @@ require_once 'db.php';
     background: rgba(248, 250, 252, 0.6);
     border-radius: 12px;
     border: 1px solid rgba(226, 232, 240, 0.8);
-    transition: all 0.3s ease;
   }
   
   .form-row:hover {
     background: rgba(248, 250, 252, 0.8);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transform: translateY(-2px);
+  }
+  
+  /* Error state for form rows */
+  .form-row.error {
+    background: rgba(254, 242, 242, 0.8);
+    border-color: #fecaca;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1);
+  }
+  
+  .form-row.error:hover {
+    background: rgba(254, 242, 242, 0.9);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
   }
   /* Form row child div */
   .form-row > div {
@@ -120,7 +137,6 @@ require_once 'db.php';
     border-radius: 12px;
     font-size: 1rem;
     background: #ffffff;
-    transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     font-weight: 500;
   }
@@ -131,7 +147,6 @@ require_once 'db.php';
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1), 0 4px 8px rgba(0,0,0,0.1);
-    transform: translateY(-1px);
   }
   /* Container for product images */
   .images-container {
@@ -153,12 +168,6 @@ require_once 'db.php';
     object-fit: contain;
     border: 2px solid #e5e7eb;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-  }
-  /* Hover effect for image preview */
-  .image-preview:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   }
   /* Hide file input */
   input[type="file"] {
@@ -182,27 +191,17 @@ require_once 'db.php';
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
     font-weight: 600;
   }
   /* Hover effect for image label */
   .image-label:hover {
     background: linear-gradient(145deg, #e2e8f0, #cbd5e1);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
     color: #475569;
   }
   
   /* Enhanced thumbnail preview styles */
   .thumbnail-preview {
-    transition: all 0.3s ease !important;
     cursor: pointer;
-  }
-  
-  .thumbnail-preview:hover {
-    transform: translate(-50%, -50%) scale(1.1) !important;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25) !important;
-    z-index: 10;
   }
   
   /* Image upload overlay */
@@ -212,10 +211,7 @@ require_once 'db.php';
     color: #0369a1;
   }
   
-  .image-label.has-image:hover {
-    background: linear-gradient(145deg, #e0f2fe, #bae6fd);
-    border-color: #0284c7;
-  }
+
   
   /* Remove image button */
   .remove-image-btn {
@@ -242,8 +238,6 @@ require_once 'db.php';
   
   .remove-image-btn:hover {
     background: #dc2626;
-    transform: scale(1.4);
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.4);
   }
   
   /* Image upload progress indicator */
@@ -262,7 +256,6 @@ require_once 'db.php';
     height: 100%;
     background: linear-gradient(90deg, #10b981, #059669);
     width: 0%;
-    transition: width 0.3s ease;
   }
   
   /* Image count indicator */
@@ -324,7 +317,6 @@ require_once 'db.php';
   .upload-icon {
     font-size: 1.5rem;
     opacity: 0.7;
-    transition: all 0.3s ease;
   }
   
   .upload-text {
@@ -333,94 +325,41 @@ require_once 'db.php';
     font-weight: 500;
   }
   
-  .image-label:hover .upload-icon {
-    opacity: 1;
-    transform: scale(1.1);
-  }
+
   
   .image-label.has-image .upload-icon,
   .image-label.has-image .upload-text {
     display: none;
   }
   
-  /* Upload actions */
-  .upload-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-    justify-content: center;
-  }
-  
-  .bulk-upload-btn,
-  .clear-all-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-  
-  .bulk-upload-btn {
-    background: linear-gradient(145deg, #10b981, #059669);
-    color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-  }
-  
-  .bulk-upload-btn:hover {
-    background: linear-gradient(145deg, #059669, #047857);
-    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
-    transform: translateY(-2px);
-  }
-  
-  .clear-all-btn {
-    background: linear-gradient(145deg, #ef4444, #dc2626);
-    color: white;
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-  }
-  
-  .clear-all-btn:hover {
-    background: linear-gradient(145deg, #dc2626, #b91c1c);
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
-    transform: translateY(-2px);
-  }
+
   
 
-
-  /* Submit button styling */
-  button {
-    background: linear-gradient(145deg, rgb(7, 7, 7), #1a1a1a);
-    color: white;
-    border: none;
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    border-radius: 16px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s ease;
-    margin: 20px auto 0 auto;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    width: auto;
-    max-width: 200px;
-    font-family: 'Times New Roman', Times, serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
+  /* Submit button styling - more specific to override Tailwind */
+  button[type="submit"] {
+    background: linear-gradient(145deg, #000000, #1a1a1a) !important;
+    color: white !important;
+    border: none !important;
+    padding: 12px 24px !important;
+    font-size: 0.95rem !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    margin: 20px 0 0 0 !important;
+    width: auto !important;
+    max-width: 160px !important;
+    font-family: 'Times New Roman', Times, serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    position: relative !important;
+    overflow: hidden !important;
   }
   /* Hover effect for button */
-  button:hover {
-    background: linear-gradient(145deg, #0056b3, #004085);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-    transform: translateY(-2px);
+  button[type="submit"]:hover {
+    background: linear-gradient(145deg,rgb(4, 5, 5),rgb(4, 5, 5)) !important;
   }
   
   button:active {
-    transform: translateY(0);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
   }
   /* Modal message styling - all notifications now use modals */
   .modal-content h2 {
@@ -457,39 +396,64 @@ require_once 'db.php';
     display: inline-block;
     margin-bottom: 20px;
     font-weight: 700;
-    color: #555;
+    color: #007bff;
     text-decoration: none;
     font-size: 0.85rem;
     transition: all 0.3s ease;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 2px solid #bbb;
-    background: linear-gradient(145deg, #f3f4f6, #e5e7eb);
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 2px solid #007bff;
+    background: linear-gradient(145deg, #e9f0ff, #d1e7ff);
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
     user-select: none;
-    margin-left: 0;
+    margin-left: 40px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    width: 200px;
-    text-align: center;
   }
   .back-button:hover,
   .back-button:focus {
     color: #fff;
-    background: #111;
-    border-color: #111;
+    background: linear-gradient(145deg, rgb(8, 8, 8), #1a1a1a);
+    border-color:rgb(19, 20, 21);
     outline: none;
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    box-shadow: 0 8px 20px rgba(6, 6, 6, 0.4);
     transform: translateY(-2px);
+  }
+  
+  .back-dashboard-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: 2px solidrgb(7, 7, 7);
+    background: linear-gradient(145deg,rgb(5, 6, 6),rgb(5, 5, 5));
+    user-select: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    align-self: flex-start;
+  }
+  
+  .back-dashboard-button:hover,
+  .back-dashboard-button:focus {
+    color: #fff;
+    background: linear-gradient(145deg, rgb(8, 8, 8), #1a1a1a);
+    border-color:rgb(13, 13, 14);
+    outline: none;
+    text-decoration: none;
   }
 </style>
 </head>
 <body>
+<!-- Enhanced Header -->
 <header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
-  <div class="flex justify-between items-center px-8 py-6 space-x-4">
+  <div class="flex items-center justify-between px-6 py-4">
     <div class="flex items-center space-x-6">
-      <div class="ml-12 mr-10 text-sm text-white flex items-center space-x-6">
+      <div class="ml-2 mr-10 text-sm text-white flex items-center space-x-6">
         <img src="images/iCenter.png" alt="Logo" class="h-20 w-auto border-2 border-white rounded-lg shadow-lg mr-4" />
         <div class="flex flex-col space-y-1">
           <span class="font-semibold text-lg"><?php echo date('l, F j, Y'); ?></span>
@@ -503,7 +467,9 @@ require_once 'db.php';
     <div class="flex items-center space-x-8">
       <div class="flex items-center space-x-4">
         <div class="flex flex-col items-center group cursor-pointer">
-          <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-medium shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+          <div
+            class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-medium shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110"
+          >
             <i class="ri-user-line text-lg"></i>
           </div>
           <span class="text-white text-xs font-semibold mt-2 group-hover:text-blue-300 transition-colors duration-300">ADMIN</span>
@@ -512,18 +478,20 @@ require_once 'db.php';
     </div>
   </div>
 </header>
+
 <div id="app" role="main" aria-label="Add product form">
+
   <form id="product-form" aria-describedby="form-instructions" novalidate>
-    <a href="admin.php" class="back-button">&larr; Back to Inventory</a>
+    <a href="admin.php" class="back-dashboard-button">&larr; Back to Dashboard</a>
     <div id="form-instructions" class="sr-only">
       Fill all required fields and upload images then press Add Product.
     </div>
 
     <div class="form-row">
       <div>
-        <label for="product">Product</label>
-        <select id="product" name="product" aria-label="Product">
-          <option value="" disabled selected>Select product</option>
+        <label for="category_name">Category</label>
+        <select id="category_name" name="category_name" aria-label="Category">
+          <option value="" disabled selected>Select category</option>
           <option value="accessories">Accessories</option>
           <option value="airpods">AirPods</option>
           <option value="android">Android</option>
@@ -539,15 +507,7 @@ require_once 'db.php';
     <div class="form-row">
       <div>
         <label for="category_id">Category ID*</label>
-        <input type="number" id="category_id" name="category_id" required autocomplete="off" placeholder="Enter category ID" aria-required="true" min="1" />
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div>
-        <label for="product_id">Product ID*</label>
-        <input type="text" id="product_id" name="product_id" required autocomplete="off" placeholder="Enter product ID" aria-required="true" aria-describedby="product_id-desc" />
-        <div id="product_id-desc" class="sr-only">Enter the product ID to auto-fill brand, model, and storage if available.</div>
+        <input type="number" id="category_id" name="category_id" required autocomplete="off" placeholder="Category ID will be auto-generated" aria-required="true" min="1" readonly style="background-color: #f8f9fa; color: #6c757d;" />
       </div>
     </div>
 
@@ -556,6 +516,10 @@ require_once 'db.php';
       <div>
         <label for="product_name">Product Name*</label>
         <input type="text" id="product_name" name="product_name" required autocomplete="off" placeholder="Enter product name" aria-required="true" />
+      </div>
+      <div>
+        <label for="auto_product_id">Product ID</label>
+        <input type="text" id="auto_product_id" name="auto_product_id" readonly placeholder="Product ID" style="background-color: #f8f9fa; color: #6c757d;" />
       </div>
     </div>
 
@@ -575,6 +539,7 @@ require_once 'db.php';
         <label for="storage">Storage*</label>
         <select id="storage" name="storage" required aria-required="true">
           <option value="" disabled selected>Select storage</option>
+          <option value="Not Available">Not Available</option>
           <option value="2GB">2GB</option>
           <option value="4GB">4GB</option>
           <option value="8GB">8GB</option>
@@ -678,11 +643,7 @@ require_once 'db.php';
         </label>
       </div>
       
-      <div class="upload-actions">
-        <button type="button" id="clear-all-btn" class="clear-all-btn" style="display: none;">
-          🗑️ Clear All
-        </button>
-      </div>
+
     </div>
 
     <button type="submit" aria-label="Add product">Add Product</button>
@@ -766,9 +727,7 @@ require_once 'db.php';
     letter-spacing: 1px;
   }
   #closeModalBtnNew:hover {
-    background: linear-gradient(145deg, #0056b3, #004085);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
-    transform: translateY(-2px);
+    background: linear-gradient(145deg,rgb(0, 4, 7),rgb(0, 5, 10));
   }
   
   /* Show the modal when needed */
@@ -963,90 +922,117 @@ require_once 'db.php';
       return products.some(p => p.product_id === productId);
     }
 
-    const productSelect = document.getElementById('product');
-    const productIdInput = document.getElementById('product_id');
+    const categorySelect = document.getElementById('category_name');
+    const categoryIdInput = document.getElementById('category_id');
+    const productNameInput = document.getElementById('product_name');
     const brandInput = document.getElementById('brand');
     const modelInput = document.getElementById('model');
     const storageInput = document.getElementById('storage');
+    const autoProductIdInput = document.getElementById('auto_product_id');
 
-    productSelect.addEventListener('change', async () => {
-      const selectedProduct = productSelect.value;
-      productIdInput.value = '';
-      brandInput.value = '';
-      modelInput.value = '';
-      storageInput.value = '';
-      return;
-    });
+    // Category ID mapping
+    const categoryIdMap = {
+      'accessories': 1,
+      'airpods': 2,
+      'android': 3,
+      'ipad': 4,
+      'iphone': 5,
+      'pc set': 6,
+      'printer': 7,
+      'laptop': 8
+    };
 
-    productIdInput.addEventListener('blur', async () => {
-      const productId = productIdInput.value.trim();
-      if (!productId) {
-        brandInput.value = '';
-        modelInput.value = '';
-        storageInput.value = '';
-        // Optionally clear image paths
-        for (let i = 1; i <= 8; i++) { // <-- changed 7 to 8
-          const imagePathInput = document.getElementById(`image_path${i}`);
-          if (imagePathInput) imagePathInput.value = '';
-        }
+    // Category prefix mapping for product ID
+    const categoryPrefixMap = {
+      'accessories': 'ACC',
+      'airpods': 'AIR',
+      'android': 'AND',
+      'ipad': 'IPD',
+      'iphone': 'IPH',
+      'pc set': 'PCS',
+      'printer': 'PRT',
+      'laptop': 'LAP'
+    };
+
+    // Function to generate product ID
+    function generateProductId() {
+      const category = categorySelect.value;
+      const productName = productNameInput.value.trim();
+      const brand = brandInput.value.trim();
+      const model = modelInput.value.trim();
+      const storage = storageInput.value;
+
+      if (!category || !productName || !brand || !model) {
+        autoProductIdInput.value = '';
         return;
       }
 
-      try {
-        // Try to fetch product details by product_id
-        const response = await fetch(`get_product_by_id.php?product_id=${encodeURIComponent(productId)}`);
-        if (!response.ok) throw new Error('Failed to fetch product details');
-        const product = await response.json();
+      // Get category prefix
+      const prefix = categoryPrefixMap[category] || 'PRD';
+      
+      // Get storage code
+      const storageCode = storage === 'Not Available' ? 'NA' : storage;
+      
+      // Combine parts: prefix + product + model + storage
+      const productId = `${prefix}-${productName.replace(/\s+/g, '_')}-${model.replace(/\s+/g, '_')}-${storageCode}`;
+      
+      autoProductIdInput.value = productId;
+    }
 
-        if (product && product.brand) {
-          brandInput.value = product.brand || '';
-          modelInput.value = product.model || '';
-          storageInput.value = product.storage || '';
-          // Set image paths
-          for (let i = 1; i <= 8; i++) { // <-- changed 7 to 8
-            const imagePathInput = document.getElementById(`image_path${i}`);
-            if (imagePathInput) imagePathInput.value = `images/products/${productId}_${i}.jpg`;
-          }
-        } else {
-          // If not found, clear fields for manual entry
-          brandInput.value = '';
-          modelInput.value = '';
-          storageInput.value = '';
-          for (let i = 1; i <= 8; i++) { // <-- changed 7 to 8
-            const imagePathInput = document.getElementById(`image_path${i}`);
-            if (imagePathInput) imagePathInput.value = '';
-          }
-        }
-      } catch (error) {
-        // On error, clear fields for manual entry
-        brandInput.value = '';
-        modelInput.value = '';
-        storageInput.value = '';
-        for (let i = 1; i <= 8; i++) { // <-- changed 7 to 8
-          const imagePathInput = document.getElementById(`image_path${i}`);
-          if (imagePathInput) imagePathInput.value = '';
-        }
-        // Optionally log error
-        console.error(error);
+    // Event listeners for auto-generating product ID
+    categorySelect.addEventListener('change', () => {
+      const selectedCategory = categorySelect.value;
+      
+      // Auto-fill category ID
+      if (selectedCategory && categoryIdMap[selectedCategory]) {
+        categoryIdInput.value = categoryIdMap[selectedCategory];
+      } else {
+        categoryIdInput.value = '';
       }
+      
+      // Clear other fields
+      brandInput.value = '';
+      modelInput.value = '';
+      storageInput.value = '';
+      autoProductIdInput.value = '';
     });
+
+    productNameInput.addEventListener('input', generateProductId);
+    brandInput.addEventListener('input', generateProductId);
+    modelInput.addEventListener('input', generateProductId);
+    storageInput.addEventListener('change', generateProductId);
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       displayMessage('', '');
 
+      // Clear previous error states
+      document.querySelectorAll('.form-row').forEach(row => {
+        row.classList.remove('error');
+      });
+
       // Client-side validation for required fields
       const requiredFields = [
-        'product', 'category_id', 'product_id', 'product_name', 'brand', 'model', 'storage', 'purchase_price', 'selling_price', 'status', 'stock_quantity'
+        'category_name', 'category_id', 'product_name', 'brand', 'model', 'storage', 'purchase_price', 'selling_price', 'status', 'stock_quantity'
       ];
+      
+      let hasErrors = false;
       for (const fieldId of requiredFields) {
         const field = document.getElementById(fieldId);
         if (!field || !field.value || field.value.trim() === '') {
-          const fieldLabel = field.previousElementSibling ? field.previousElementSibling.textContent : fieldId;
-          displayMessage(`Please fill the required field: ${fieldLabel}`, 'error');
-          field.focus();
-          return;
+          // Find the parent form-row and add error class
+          const formRow = field.closest('.form-row');
+          if (formRow) {
+            formRow.classList.add('error');
+          }
+          hasErrors = true;
         }
+      }
+      
+      if (hasErrors) {
+        const fieldLabel = 'required fields';
+        displayMessage(`Please fill all required fields marked in red`, 'error');
+        return;
       }
 
       // Show confirmation modal before actually submitting
@@ -1076,10 +1062,9 @@ require_once 'db.php';
       }
 
       const productData = {
-        product: formData.get('product'),
-        category_id: formData.get('category_id'), // <-- add this line
-        product_id: formData.get('product_id').trim(),
-        product_name: formData.get('product_name').trim(),
+        category_id: formData.get('category_id'),
+        product_id: formData.get('auto_product_id').trim(),
+        category_name: formData.get('category_name'),
         brand: formData.get('brand').trim(),
         model: formData.get('model').trim(),
         storage: formData.get('storage').trim(),
@@ -1089,14 +1074,14 @@ require_once 'db.php';
         stock_quantity: Number(formData.get('stock_quantity')),
         images: {},
         image_paths: {
-          image_path1: 'images/products/' + formData.get('product_id') + '_1.jpg',
-          image_path2: 'images/products/' + formData.get('product_id') + '_2.jpg',
-          image_path3: 'images/products/' + formData.get('product_id') + '_3.jpg',
-          image_path4: 'images/products/' + formData.get('product_id') + '_4.jpg',
-          image_path5: 'images/products/' + formData.get('product_id') + '_5.jpg',
-          image_path6: 'images/products/' + formData.get('product_id') + '_6.jpg',
-          image_path7: 'images/products/' + formData.get('product_id') + '_7.jpg',
-          image_path8: 'images/products/' + formData.get('product_id') + '_8.jpg'
+          image_path1: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_1.jpg',
+          image_path2: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_2.jpg',
+          image_path3: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_3.jpg',
+          image_path4: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_4.jpg',
+          image_path5: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_5.jpg',
+          image_path6: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_6.jpg',
+          image_path7: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_7.jpg',
+          image_path8: 'images/products/' + formData.get('auto_product_id').replace(/[^a-zA-Z0-9]/g, '_') + '_8.jpg'
         }
       };
 
@@ -1187,8 +1172,8 @@ require_once 'db.php';
         // Get the corresponding hidden image path input
         const imagePathInput = document.getElementById(`image_path${inputNumber}`);
 
-        // Get the product id to construct the image path
-        const productId = document.getElementById('product_id').value;
+        // Get the auto-generated product ID to construct the image path
+        const autoProductId = document.getElementById('auto_product_id').value;
 
         // Remove existing elements
         clearExistingElements(label);
@@ -1222,8 +1207,8 @@ require_once 'db.php';
           if (uploadText) uploadText.style.display = 'none';
           
           // Update the image path hidden input
-          if (imagePathInput && productId) {
-            imagePathInput.value = `images/products/${productId}_${inputNumber}.jpg`;
+          if (imagePathInput && autoProductId) {
+            imagePathInput.value = `images/products/${autoProductId.replace(/[^a-zA-Z0-9]/g, '_')}_${inputNumber}.jpg`;
           }
 
           // Create thumbnail preview
@@ -1291,17 +1276,17 @@ require_once 'db.php';
       });
     });
 
-    // Add click to upload functionality
+    // Handle clicks on remove buttons and thumbnails to prevent label click
     imageInputs.forEach(input => {
       const label = input.closest('label');
       if (label) {
+        // Add event listeners to prevent label click when clicking on remove button or thumbnail
         label.addEventListener('click', (e) => {
-          // Don't trigger if clicking on remove button or thumbnail
           if (e.target.classList.contains('remove-image-btn') || 
               e.target.classList.contains('thumbnail-preview')) {
-            return;
+            e.preventDefault();
+            e.stopPropagation();
           }
-          input.click();
         });
       }
     });
@@ -1369,12 +1354,6 @@ require_once 'db.php';
       if (uploadCountElement) {
         uploadCountElement.textContent = `${uploadedImages}/${totalImages} images uploaded`;
       }
-      
-      // Show/hide clear all button
-      const clearAllBtn = document.getElementById('clear-all-btn');
-      if (clearAllBtn) {
-        clearAllBtn.style.display = uploadedImages > 0 ? 'block' : 'none';
-      }
     }
     
     // Function to validate file size (5MB limit)
@@ -1410,19 +1389,7 @@ require_once 'db.php';
       if (uploadText) uploadText.style.display = 'block';
     }
     
-    // Function to clear all images
-    function clearAllImages() {
-      imageInputs.forEach(input => {
-        input.value = '';
-        const label = input.closest('label');
-        if (label) {
-          label.classList.remove('has-image');
-          clearExistingElements(label);
-          showUploadElements(label);
-        }
-      });
-      updateImageCount();
-    }
+
 
     // Update count when images are added/removed
     const observer = new MutationObserver(updateImageCount);
@@ -1435,6 +1402,38 @@ require_once 'db.php';
 
     // Initial count update
     updateImageCount();
+    
+    // Real-time validation for required fields
+    const requiredFields = [
+      'category_name', 'category_id', 'product_name', 'brand', 'model', 'storage', 'purchase_price', 'selling_price', 'status', 'stock_quantity'
+    ];
+    
+    requiredFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        // Validate on blur (when user leaves the field)
+        field.addEventListener('blur', function() {
+          const formRow = this.closest('.form-row');
+          if (formRow) {
+            if (!this.value || this.value.trim() === '') {
+              formRow.classList.add('error');
+            } else {
+              formRow.classList.remove('error');
+            }
+          }
+        });
+        
+        // Validate on input (as user types)
+        field.addEventListener('input', function() {
+          const formRow = this.closest('.form-row');
+          if (formRow) {
+            if (this.value && this.value.trim() !== '') {
+              formRow.classList.remove('error');
+            }
+          }
+        });
+      }
+    });
     
     // Bulk upload functionality
     const bulkUploadBtn = document.getElementById('bulk-upload-btn');
@@ -1473,46 +1472,28 @@ require_once 'db.php';
       });
     }
     
-    // Clear all images functionality
-    const clearAllBtn = document.getElementById('clear-all-btn');
-    if (clearAllBtn) {
-      clearAllBtn.addEventListener('click', () => {
-        // Show confirmation modal
-        const modalTitle = modal.querySelector('#modalTitle');
-        const modalDesc = modal.querySelector('#modalDesc');
-        const closeBtn = modal.querySelector('#closeModalBtnNew');
-        
-        if (modalTitle && modalDesc) {
-          modalTitle.textContent = 'Confirm Action';
-          modalTitle.style.color = '#1e40af';
-          modalDesc.textContent = 'Are you sure you want to clear all uploaded images?';
-          modal.classList.add('show');
-          
-          // Change close button to confirm button temporarily
-          const originalText = closeBtn.textContent;
-          closeBtn.textContent = 'Clear All Images';
-          closeBtn.style.background = 'linear-gradient(145deg, #ef4444, #dc2626)';
-          
-          const confirmHandler = () => {
-            clearAllImages();
-            modal.classList.remove('show');
-            closeBtn.textContent = originalText;
-            closeBtn.style.background = 'linear-gradient(145deg, rgb(7, 7, 7), #1a1a1a)';
-            closeBtn.removeEventListener('click', confirmHandler);
-            closeBtn.addEventListener('click', function() {
-              modal.classList.remove('show');
-            });
-          };
-          
-          closeBtn.removeEventListener('click', function() {
-            modal.classList.remove('show');
-          });
-          closeBtn.addEventListener('click', confirmHandler);
-        }
-      });
-    }
+
 
   })();
+
+  // Update current time in header
+  function updateCurrentTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour12: true, 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit' 
+    });
+    const timeElement = document.getElementById('currentTime');
+    if (timeElement) {
+      timeElement.textContent = timeString;
+    }
+  }
+
+  // Update time every second
+  setInterval(updateCurrentTime, 1000);
+  updateCurrentTime(); // Initial call
 </script>
 </body>
 </html>
