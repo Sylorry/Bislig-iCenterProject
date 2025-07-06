@@ -60,11 +60,55 @@ $activeCategory = $currentCategory === '' ? 'all products' : $currentCategory;
     <title>View Products</title>
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+      }
+      
+      /* Enhanced Header */
+      header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="min-h-screen">
+    <!-- Enhanced Header -->
+    <header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
+        <div class="flex justify-between items-center px-8 py-6 space-x-4">
+            <div class="flex items-center space-x-6">
+                <div class="ml-2 mr-10 text-sm text-white flex items-center space-x-6">
+                    <img src="images/iCenter.png" alt="Logo" class="h-20 w-auto border-2 border-white rounded-lg shadow-lg mr-4" />
+                    <div class="flex flex-col space-y-1">
+                        <span class="font-semibold text-lg"><?php echo date('l, F j, Y'); ?></span>
+                        <div class="text-white/80 text-sm">
+                            <i class="ri-time-line mr-2"></i>
+                            <span id="currentTime"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center space-x-8">
+                <div class="flex items-center space-x-4">
+                    <div class="flex flex-col items-center group cursor-pointer">
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-medium shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                            <i class="ri-user-line text-lg"></i>
+                        </div>
+                        <span class="text-white text-xs font-semibold mt-2 group-hover:text-blue-300 transition-colors duration-300">ADMIN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
     <div class="container mx-auto py-8">
         <div class="flex justify-between items-center mb-8">
-            <a href="admin.php" class="inline-flex items-center text-sm text-gray-600 hover:text-white hover:bg-black border-2 border-gray-300 hover:border-black rounded-lg px-6 py-3 transition-all duration-300 font-medium shadow-md hover:shadow-lg">
+            <a href="admin.php" class="inline-flex items-center text-sm text-white bg-black border-2 border-black rounded-lg px-6 py-3 transition-all duration-300 font-medium shadow-md hover:shadow-lg">
                 <i class="fas fa-arrow-left mr-2"></i>
                 Back to Dashboard
             </a>
@@ -73,8 +117,8 @@ $activeCategory = $currentCategory === '' ? 'all products' : $currentCategory;
                 Archived Products
             </a>
         </div>
-        <h1 class="text-4xl font-bold mb-6 text-gray-900 text-center">Product List</h1>
-        <div class="flex justify-center mb-6" id="categoryButtons">
+
+        <div class="flex justify-center mb-6 flex-wrap gap-3" id="categoryButtons">
             <?php
             // Add "All Products" button
             $activeClass = ($activeCategory === 'all products') ? 'bg-black text-white shadow-lg' : 'bg-white text-gray-800 hover:bg-gray-100 border border-gray-300 shadow-md hover:shadow-lg';
@@ -175,14 +219,74 @@ $activeCategory = $currentCategory === '' ? 'all products' : $currentCategory;
     event.preventDefault();
     const url = event.currentTarget.href;
     const categoryButtons = document.getElementById('categoryButtons');
+    const productGrid = document.getElementById('productGrid');
+    
     // Add fade out transition
     categoryButtons.style.transition = 'opacity 0.3s ease';
     categoryButtons.style.opacity = '0.5';
-    // Navigate after short delay to allow transition
-    setTimeout(() => {
-      window.location.href = url;
-    }, 300);
+    productGrid.style.transition = 'opacity 0.3s ease';
+    productGrid.style.opacity = '0.5';
+    
+    // Update active button state
+    document.querySelectorAll('#categoryButtons a').forEach(btn => {
+      btn.classList.remove('bg-black', 'text-white', 'shadow-lg');
+      btn.classList.add('bg-white', 'text-gray-800', 'hover:bg-gray-100', 'border', 'border-gray-300', 'shadow-md', 'hover:shadow-lg');
+    });
+    event.currentTarget.classList.remove('bg-white', 'text-gray-800', 'hover:bg-gray-100', 'border', 'border-gray-300', 'shadow-md', 'hover:shadow-lg');
+    event.currentTarget.classList.add('bg-black', 'text-white', 'shadow-lg');
+    
+    // Parse URL parameters
+    const urlParams = new URLSearchParams(url.split('?')[1] || '');
+    const category = urlParams.get('category') || '';
+    const search = urlParams.get('search') || '';
+    const modelBrand = urlParams.get('model_brand') || '';
+    const sort = urlParams.get('sort') || '';
+    
+    // Make AJAX request
+    fetch(`get_products.php?category=${encodeURIComponent(category)}&search=${encodeURIComponent(search)}&model_brand=${encodeURIComponent(modelBrand)}&sort=${encodeURIComponent(sort)}&ajax=1`)
+      .then(response => response.text())
+      .then(html => {
+        // Update product grid
+        productGrid.innerHTML = html;
+        
+        // Restore opacity
+        categoryButtons.style.opacity = '1';
+        productGrid.style.opacity = '1';
+        
+        // Update URL without reloading
+        const newUrl = window.location.pathname + '?' + urlParams.toString();
+        window.history.pushState({}, '', newUrl);
+        
+        // Reinitialize event listeners for new content
+        initializeEventListeners();
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Restore opacity on error
+        categoryButtons.style.opacity = '1';
+        productGrid.style.opacity = '1';
+        alert('Error loading products. Please try again.');
+      });
   }
+
+  // Current time display
+  function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('en-US', { 
+      hour12: true, 
+      hour: '2-digit', 
+      minute: '2-digit', 
+      second: '2-digit' 
+    });
+    const timeElement = document.getElementById('currentTime');
+    if (timeElement) {
+      timeElement.textContent = timeString;
+    }
+  }
+
+  // Update time every second
+  setInterval(updateTime, 1000);
+  updateTime(); // Initial call
   </script>
 
 <!-- Modal HTML -->
@@ -230,7 +334,8 @@ $activeCategory = $currentCategory === '' ? 'all products' : $currentCategory;
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+// Function to initialize all event listeners
+function initializeEventListeners() {
   // Archive modal elements and functions
   const modal = document.getElementById('archiveModal');
   const confirmBtn = document.getElementById('confirmArchive');
@@ -379,6 +484,11 @@ document.addEventListener('DOMContentLoaded', function () {
       saleConfirmModal.classList.remove('hidden');
     });
   });
+}
+
+// Initialize event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', function () {
+  initializeEventListeners();
 });
 </script>
 

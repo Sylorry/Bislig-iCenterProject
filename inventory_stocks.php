@@ -16,6 +16,30 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products Inventory - iCenter</title>
     
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#1a1a1a", secondary: "#404040" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     
@@ -32,6 +56,9 @@ try {
     
     <!-- Animate.css for smooth animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Remixicon for enhanced icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
     
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -56,23 +83,105 @@ try {
     
     <!-- Chart.js for analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        min-height: 100vh;
+      }
+      
+      /* Enhanced Header */
+      header {
+        background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      
+      /* Header specific styles */
+      .header-logo {
+        height: 65px;
+        width: auto;
+        border: 2px solid white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+      
+      .header-date {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      
+      .header-time {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+      
+      .admin-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+      }
+      
+      .admin-avatar:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+      
+      .admin-label {
+        font-size: 10px;
+        font-weight: 600;
+        margin-top: 4px;
+      }
+    </style>
 </head>
 <body>
+
+<!-- Enhanced Header -->
+<header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
+  <div class="flex justify-between items-center px-8 py-6 space-x-4">
+    <div class="flex items-center space-x-6">
+      <div class="ml-2 mr-10 text-sm text-white flex items-center space-x-6">
+        <img src="images/iCenter.png" alt="Logo" class="h-20 w-auto border-2 border-white rounded-lg shadow-lg mr-4" />
+        <div class="flex flex-col space-y-1">
+          <span class="font-semibold text-lg"><?php echo date('l, F j, Y'); ?></span>
+          <div class="text-white/80 text-sm">
+            <i class="ri-time-line mr-2"></i>
+            <span id="currentTime"></span>
+          </div>
+    </div>
+  </div>
+</div>
+    <div class="flex items-center space-x-8">
+      <div class="flex items-center space-x-4">
+      <div class="flex flex-col items-center group cursor-pointer">
+         <div
+          class="w-12 h-12 rounded-full bg-white flex items-center justify-center text-black font-medium shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110"
+         >
+          <i class="ri-user-line text-lg"></i>
+         </div>
+        <span class="text-white text-xs font-semibold mt-2 group-hover:text-blue-300 transition-colors duration-300">ADMIN</span>
+       </div>
+     </div>
+   </div>
+ </header>
 
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="header-section">
         <!-- Back Button -->
-        <div class="back-button-container animate__animated animate__fadeInLeft">
+        <div class="back-button-container">
             <a href="admin.php" class="btn-back" title="Back to Admin Dashboard">
                 <i class="fas fa-arrow-left mr-2"></i>
                 <span>Back to Dashboard</span>
             </a>
-        </div>
-        
-        <!-- Logo Container -->
-        <div class="logo-container animate__animated animate__fadeInRight">
-            <img src="images/iCenter.png" alt="iCenter Logo" class="logo-img">
         </div>
     </div>
     
@@ -81,18 +190,10 @@ try {
             <!-- Main Card -->
             <div class="main-card animate__animated animate__fadeInUp animate__delay-1s">
                 <div class="card-header">
-                    <div class="header-content">
-                        <div class="title-section">
-                            <h2 class="page-title">
-                                <i class="fas fa-warehouse"></i>
-                                Products Inventory
-                            </h2>
-                            <p class="page-subtitle">Manage and monitor your product inventory</p>
-                        </div>
-                    </div>
-                    <!-- Stats Cards (now outside and below the black header) -->
-                    <div class="stats-section animate__animated animate__fadeInUp" style="margin: 20px 0 0 0;">
-                        <div class="row g-3 mb-0">
+
+                    <!-- Stats Cards below title -->
+                    <div class="stats-section" style="margin: 0 0 20px 0;">
+                        <div class="row g-3 mb-0 justify-content-center">
                             <?php
                             try {
                                 // Total products
@@ -110,9 +211,14 @@ try {
                                 $outOfStockStmt = $pdo->prepare($outOfStockQuery);
                                 $outOfStockStmt->execute();
                                 $outOfStockProducts = $outOfStockStmt->fetch(PDO::FETCH_ASSOC)['out_of_stock'] ?? 0;
+                                // In stock products (products with stock > 5)
+                                $inStockQuery = "SELECT COUNT(*) as in_stock FROM products WHERE stock_quantity > 5 AND (archived IS NULL OR archived = 0)";
+                                $inStockStmt = $pdo->prepare($inStockQuery);
+                                $inStockStmt->execute();
+                                $inStockProducts = $inStockStmt->fetch(PDO::FETCH_ASSOC)['in_stock'] ?? 0;
                             } catch (PDOException $e) {
                                 error_log("Database error: " . $e->getMessage());
-                                $totalProducts = $lowStockProducts = $outOfStockProducts = 0;
+                                $totalProducts = $lowStockProducts = $outOfStockProducts = $inStockProducts = 0;
                             }
                             ?>
                             <div class="col-xl-3 col-md-6">
@@ -148,30 +254,42 @@ try {
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-xl-3 col-md-6">
+                                <div class="stat-card stat-card-success">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="stat-content">
+                                        <h3 class="stat-number"><?= number_format($inStockProducts) ?></h3>
+                                        <p class="stat-label">In Stock</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="action-buttons" style="margin-top: 20px;">
-                        <button class="btn btn-success btn-action" onclick="viewStockInReport()" title="View Stock In Report">
+                    </div>
+                    <div class="action-buttons" style="margin-top: 2px; margin-bottom: 20px;">
+                        <button class="btn btn-action" onclick="viewStockInReport()" title="View Stock In Report" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-arrow-down"></i>
                             <span>Stock In</span>
                         </button>
-                        <button class="btn btn-danger btn-action" onclick="viewStockOutReport()" title="View Stock Out Report">
+                        <button class="btn btn-action" onclick="viewStockOutReport()" title="View Stock Out Report" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-arrow-up"></i>
                             <span>Stock Out</span>
                         </button>
-                        <button class="btn btn-warning btn-action" onclick="viewReturnsReport()" title="Report Defect">
+                        <button class="btn btn-action" onclick="viewReturnsReport()" title="Report Defect" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-undo"></i>
                             <span>Report Defect</span>
                         </button>
-                        <button class="btn btn-info btn-action" onclick="openRestockPage()" title="Restock Products">
+                        <button class="btn btn-action" onclick="openRestockPage()" title="Restock Products" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-plus-circle"></i>
                             <span>Restock</span>
                         </button>
-                        <button class="btn btn-secondary btn-action" onclick="openReturnsPage()" title="Returns">
+                        <button class="btn btn-action" onclick="openReturnsPage()" title="Returns" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-undo"></i>
                             <span>Returns</span>
                         </button>
-                        <button class="btn btn-primary btn-action" onclick="printTable()" title="Print Inventory">
+                        <button class="btn btn-action" onclick="printTable()" title="Print Inventory" style="background: #000000; color: #ffffff; border: 2px solid #000000;">
                             <i class="fas fa-print"></i>
                             <span>Print</span>
                         </button>
@@ -183,21 +301,21 @@ try {
                         <table id="productsTable" class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th class="text-center" style="width: 200px; min-width: 200px; max-width: 200px;">Product<br>ID</th>
-                                    <th style="width: 120px; min-width: 120px;">Product<br>Name</th>
-                                    <th style="width: 100px; min-width: 100px;">Brand</th>
-                                    <th style="width: 150px; min-width: 150px;">Model</th>
-                                    <th style="width: 100px; min-width: 100px;">Storage</th>
-                                    <th class="text-center" style="width: 120px; min-width: 120px; max-width: 120px;">Stock<br>Level</th>
-                                    <th class="text-end" style="width: 100px; min-width: 100px; max-width: 100px;">Purchase<br>Price</th>
-                                    <th class="text-end" style="width: 100px; min-width: 100px; max-width: 100px;">Selling<br>Price</th>
-                                    <th class="text-center" style="width: 100px; min-width: 100px; max-width: 100px;">Status</th>
+                                    <th class="text-center" style="width: auto; min-width: 250px;">Product<br>ID</th>
+                                    <th class="text-center" style="width: 200px; min-width: 200px;">Product<br>Name</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px;">Brand</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px;">Model</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px;">Storage</th>
+                                    <th class="text-center" style="width: 180px; min-width: 180px; max-width: 180px;">Stock<br>Level</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px; max-width: 100px;">Purchase<br>Price</th>
+                                    <th class="text-center" style="width: 100px; min-width: 100px; max-width: 100px;">Selling<br>Price</th>
+                                    <th class="text-center" style="width: 80px; min-width: 80px; max-width: 80px;">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 try {
-                                    $query = "SELECT * FROM products WHERE (archived IS NULL OR archived = 0) ORDER BY product_id DESC";
+                                    $query = "SELECT * FROM products WHERE (archived IS NULL OR archived = 0) ORDER BY product ASC";
                                     $stmt = $pdo->prepare($query);
                                     $stmt->execute();
                                     
@@ -350,9 +468,14 @@ try {
                             <input type="text" id="stockInSearch" class="form-control" placeholder="Search products, brands, models..." onkeyup="searchStockInTable()">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button type="button" class="btn btn-outline-success w-100" onclick="refreshStockInData()">
                             <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-info w-100" onclick="clearStockInDates()" title="Show all records">
+                            <i class="fas fa-list"></i> Show All
                         </button>
                     </div>
                 </div>
@@ -439,9 +562,14 @@ try {
                             <input type="text" id="stockOutSearch" class="form-control" placeholder="Search products, brands, models..." onkeyup="searchStockOutTable()">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button type="button" class="btn btn-outline-danger w-100" onclick="refreshStockOutData()">
                             <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-info w-100" onclick="clearStockOutDates()" title="Show all records">
+                            <i class="fas fa-list"></i> Show All
                         </button>
                     </div>
                 </div>
@@ -528,9 +656,14 @@ try {
                             <input type="text" id="returnsSearch" class="form-control" placeholder="Search products, brands, models..." onkeyup="searchReturnsTable()">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button type="button" class="btn btn-outline-warning w-100" onclick="refreshReturnsData()">
                             <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-outline-info w-100" onclick="clearReturnsDates()" title="Show all records">
+                            <i class="fas fa-list"></i> Show All
                         </button>
                     </div>
                 </div>
@@ -753,10 +886,10 @@ try {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: Arial, sans-serif;
     background: #fff;
     min-height: 100vh;
-    color: var(--dark-color);
+    color: #000000;
     line-height: 1.6;
 }
 
@@ -791,7 +924,7 @@ body {
 
 /* Container */
 .container-fluid {
-    max-width: 1400px;
+    max-width: 1800px;
     margin: 0 auto;
     padding: 20px;
     position: relative;
@@ -827,7 +960,7 @@ body {
     align-items: center;
     gap: 8px;
     padding: 12px 20px;
-    border-radius: 25px;
+    border-radius: 8px;
     font-weight: 500;
     transition: var(--transition);
     text-decoration: none;
@@ -840,9 +973,9 @@ body {
 .btn-back:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-    background: var(--primary-color);
+    background: #000;
     color: white;
-    border-color: var(--primary-color);
+    border-color: #000;
 }
 
 /* Stats Section */
@@ -858,16 +991,22 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
-    box-shadow: var(--shadow-md);
-    transition: var(--transition);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 2px solid #000000;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .stat-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -2px rgba(0, 0, 0, 0.1);
 }
 
 .stat-card::before {
@@ -938,11 +1077,12 @@ body {
     box-shadow: var(--shadow-lg);
     border: 1px solid rgba(255, 255, 255, 0.2);
     overflow: hidden;
+    width: 100%;
 }
 
 .card-header {
-    background: #000000;
-    color: white;
+    background: #ffffff;
+    color: #333;
     padding: 30px;
     border: none;
 }
@@ -966,8 +1106,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: #000000;
-    color: white;
+    background: transparent;
+    color: #333;
     padding: 15px 20px;
     border-radius: 8px;
 }
@@ -982,6 +1122,8 @@ body {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-action {
@@ -1000,6 +1142,9 @@ body {
 .btn-action:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
 }
 
 .btn-action.btn-primary {
@@ -1022,12 +1167,13 @@ body {
     opacity: 1 !important;
     background: white;
     border-radius: 12px;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: var(--shadow-md);
     border: 1px solid var(--border-color);
     max-height: 600px; /* Fixed height for scrolling */
     overflow-y: auto; /* Enable vertical scrolling */
     overflow-x: auto; /* Enable horizontal scrolling if needed */
+    width: 100%;
 }
 
 /* Custom scrollbar styling */
@@ -1091,6 +1237,7 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
+    font-family: Arial, sans-serif;
 }
 
 .table thead th:last-child {
@@ -1132,6 +1279,8 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-family: Arial, sans-serif;
+    color: #000000;
 }
 
 .table tbody td:last-child {
@@ -1211,25 +1360,30 @@ body {
 /* Product Row Styles */
 .product-id {
     font-weight: 600;
-    color: var(--primary-color);
+    color: #000000;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 250px;
+    text-align: center;
 }
 
 .product-name {
     font-weight: 500;
-    color: var(--dark-color);
+    color: #000000;
 }
 
 .product-brand {
-    color: var(--secondary-color);
+    color: #000000;
 }
 
 .product-model {
-    font-family: 'Courier New', monospace;
-    color: var(--dark-color);
+    font-family: Arial, sans-serif;
+    color: #000000;
 }
 
 .product-storage {
-    color: var(--secondary-color);
+    color: #000000;
 }
 
 /* Stock Indicator */
@@ -1243,6 +1397,7 @@ body {
     font-size: 0.875rem;
     position: relative;
     overflow: hidden;
+    font-family: Arial, sans-serif;
 }
 
 .stock-indicator::after {
@@ -1263,27 +1418,29 @@ body {
 
 .stock-high {
     background: #dcfce7;
-    color: #166534;
+    color: #000000;
 }
 
 .stock-low {
     background: #fef3c7;
-    color: #92400e;
+    color: #000000;
 }
 
 .stock-out {
     background: #fee2e2;
-    color: #991b1b;
+    color: #000000;
 }
 
 .stock-number {
     font-weight: 700;
     font-size: 1rem;
+    color: #000000;
 }
 
 .stock-label {
     font-size: 0.75rem;
     opacity: 0.8;
+    color: #000000;
 }
 
 /* Price Cells */
@@ -1302,26 +1459,27 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    font-family: Arial, sans-serif;
 }
 
 .status-active {
     background: #dcfce7;
-    color: #166534;
+    color: #000000;
 }
 
 .status-inactive {
     background: #fee2e2;
-    color: #991b1b;
+    color: #000000;
 }
 
 .status-pending {
     background: #fef3c7;
-    color: #92400e;
+    color: #000000;
 }
 
 .status-secondary {
     background: #f1f5f9;
-    color: #475569;
+    color: #000000;
 }
 
 /* Actions Cell */
@@ -1604,6 +1762,9 @@ body {
     .table tbody td:nth-child(1), .table thead th:nth-child(1) {
         text-align: center !important;
         font-weight: bold !important;
+        width: auto !important;
+        min-width: 200px !important;
+        max-width: none !important;
     }
     
     .table tbody td:nth-child(6), .table thead th:nth-child(6) {
@@ -1987,7 +2148,7 @@ body {
 .table tbody td.product-id {
     background: rgba(37, 99, 235, 0.02);
     font-weight: 600;
-    color: var(--primary-color);
+    color: #000000;
 }
 
 .table tbody td.stock-cell {
@@ -2036,39 +2197,53 @@ body {
 }
 
 /* Ensure consistent column widths */
-.table th:nth-child(1), .table td:nth-child(1) { width: 300px; min-width: 300px; max-width: 300px; }
-.table th:nth-child(2), .table td:nth-child(2) { width: 120px; min-width: 120px; max-width: 120px; }
+.table th:nth-child(1), .table td:nth-child(1) { width: auto; min-width: 250px; }
+.table th:nth-child(2), .table td:nth-child(2) { width: 200px; min-width: 200px; max-width: 200px; }
 .table th:nth-child(3), .table td:nth-child(3) { width: 100px; min-width: 100px; }
-.table th:nth-child(4), .table td:nth-child(4) { width: 150px; min-width: 150px; }
+.table th:nth-child(4), .table td:nth-child(4) { width: 100px; min-width: 100px; }
 .table th:nth-child(5), .table td:nth-child(5) { width: 100px; min-width: 100px; }
-.table th:nth-child(6), .table td:nth-child(6) { width: 120px; min-width: 120px; max-width: 120px; }
+.table th:nth-child(6), .table td:nth-child(6) { width: 180px; min-width: 180px; max-width: 180px; }
 .table th:nth-child(7), .table td:nth-child(7) { width: 100px; min-width: 100px; max-width: 100px; }
 .table th:nth-child(8), .table td:nth-child(8) { width: 100px; min-width: 100px; max-width: 100px; }
-.table th:nth-child(9), .table td:nth-child(9) { width: 100px; min-width: 100px; max-width: 100px; }
+.table th:nth-child(9), .table td:nth-child(9) { width: 80px; min-width: 80px; max-width: 80px; }
 
 /* Handle long content in table cells */
 .table tbody td.product-name {
     white-space: normal;
     word-wrap: break-word;
-    max-width: 120px;
+    max-width: 200px;
+    font-size: 0.8rem;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    text-align: center;
 }
 
 .table tbody td.product-model {
     white-space: normal;
     word-wrap: break-word;
     max-width: 100px;
+    font-size: 0.8rem;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    text-align: center;
 }
 
 .table tbody td.product-brand {
     white-space: normal;
     word-wrap: break-word;
     max-width: 100px;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    text-align: center;
 }
 
 .table tbody td.product-storage {
     white-space: normal;
     word-wrap: break-word;
     max-width: 100px;
+    font-family: Arial, sans-serif;
+    color: #000000;
+    text-align: center;
 }
 
 /* Ensure stock indicator fits properly */
@@ -2088,7 +2263,9 @@ body {
 /* Ensure price cells are properly aligned */
 .table tbody td.price-cell {
     white-space: nowrap;
-    text-align: right;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    color: var(--dark-color);
 }
 
 /* Ensure status badges fit properly */
@@ -2099,13 +2276,15 @@ body {
 
 .status-badge {
     display: inline-block;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.75rem;
+    padding: 3px 6px;
+    border-radius: 10px;
+    font-size: 0.65rem;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     white-space: nowrap;
+    font-family: Arial, sans-serif;
+    color: #000000;
 }
 
 /* Enhanced Stock In Modal Styles */
@@ -2114,6 +2293,24 @@ body {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     background: #ffffff;
     border: 1px solid #e5e7eb;
+}
+
+/* Modal table column width adjustments */
+#stockInTable th:first-child,
+#stockOutTable th:first-child,
+#returnsTable th:first-child {
+    min-width: 100px !important;
+    max-width: 100px !important;
+    width: 100px !important;
+}
+
+#stockInTable td:first-child,
+#stockOutTable td:first-child,
+#returnsTable td:first-child {
+    min-width: 100px !important;
+    max-width: 100px !important;
+    width: 100px !important;
+    font-size: 0.8rem !important;
 }
 
 #stockInModal .modal-header {
@@ -3671,7 +3868,7 @@ $(document).ready(function() {
         scrollY: '500px', // Enable vertical scrolling
         scrollCollapse: true, // Collapse scroll when not needed
         scrollX: true, // Enable horizontal scrolling if needed
-        order: [[0, "desc"]],
+        ordering: false, // Disable sorting functionality
         pageLength: 25,
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
         dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
@@ -3694,41 +3891,55 @@ $(document).ready(function() {
         },
         columnDefs: [
             {
-                targets: [0, 5],
-                type: 'num',
+                targets: [0],
+                type: 'string',
                 className: 'text-center',
-                width: '80px'
+                width: 'auto',
+                orderable: false
             },
             {
                 targets: [1],
-                className: '',
-                width: '200px'
+                className: 'text-center',
+                width: '200px',
+                orderable: false
             },
             {
                 targets: [2],
-                className: '',
-                width: '120px'
+                className: 'text-center',
+                width: '120px',
+                orderable: false
             },
             {
                 targets: [3],
-                className: '',
-                width: '150px'
+                className: 'text-center',
+                width: '150px',
+                orderable: false
             },
             {
                 targets: [4],
-                className: '',
-                width: '100px'
+                className: 'text-center',
+                width: '100px',
+                orderable: false
+            },
+            {
+                targets: [5],
+                type: 'num',
+                className: 'text-center',
+                width: '180px',
+                orderable: false
             },
             {
                 targets: [6, 7],
                 type: 'currency',
-                className: 'text-end',
-                width: '140px'
+                className: 'text-center',
+                width: '140px',
+                orderable: false
             },
             {
                 targets: [8],
                 className: 'text-center',
-                width: '100px'
+                width: '80px',
+                orderable: false
             }
         ],
         initComplete: function() {
@@ -3887,7 +4098,7 @@ function loadStockInData() {
     $('#stockInTable tbody').empty();
     $('#stockInSummary').hide();
     
-    // Set default date range (last 30 days)
+    // Set default date range (last 30 days) - but allow showing all if no dates
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 30);
@@ -3901,7 +4112,8 @@ function loadStockInData() {
         type: 'POST',
         data: {
             start_date: startDate.toISOString().split('T')[0],
-            end_date: endDate.toISOString().split('T')[0]
+            end_date: endDate.toISOString().split('T')[0],
+            show_all: false
         },
         success: function(response) {
             $('#stockInLoading').hide();
@@ -4020,7 +4232,11 @@ function filterStockInReport() {
     const startDate = document.getElementById('stockInStartDate').value;
     const endDate = document.getElementById('stockInEndDate').value;
     
-    if (!startDate || !endDate) return;
+    // If no dates are selected, show all records
+    if (!startDate && !endDate) {
+        loadStockInData();
+        return;
+    }
     
     // Show loading indicator
     $('#stockInLoading').show();
@@ -4113,6 +4329,12 @@ function refreshStockInData() {
     loadStockInData();
 }
 
+function clearStockInDates() {
+    document.getElementById('stockInStartDate').value = '';
+    document.getElementById('stockInEndDate').value = '';
+    loadStockInData();
+}
+
 function setupStockMovements() {
     // This function would typically redirect to a setup page or run the SQL script
     if (confirm('This will set up the stock movements tracking system. Continue?')) {
@@ -4140,7 +4362,7 @@ function loadStockOutData() {
     $('#stockOutTable tbody').empty();
     $('#stockOutSummary').hide();
     
-    // Set default date range (last 30 days)
+    // Set default date range (last 30 days) - but allow showing all if no dates
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 30);
@@ -4154,7 +4376,8 @@ function loadStockOutData() {
         type: 'POST',
         data: {
             start_date: startDate.toISOString().split('T')[0],
-            end_date: endDate.toISOString().split('T')[0]
+            end_date: endDate.toISOString().split('T')[0],
+            show_all: false
         },
         success: function(response) {
             $('#stockOutLoading').hide();
@@ -4276,7 +4499,11 @@ function filterStockOutReport() {
     const startDate = document.getElementById('stockOutStartDate').value;
     const endDate = document.getElementById('stockOutEndDate').value;
     
-    if (!startDate || !endDate) return;
+    // If no dates are selected, show all records
+    if (!startDate && !endDate) {
+        loadStockOutData();
+        return;
+    }
     
     // Show loading indicator
     $('#stockOutLoading').show();
@@ -4369,6 +4596,12 @@ function refreshStockOutData() {
     loadStockOutData();
 }
 
+function clearStockOutDates() {
+    document.getElementById('stockOutStartDate').value = '';
+    document.getElementById('stockOutEndDate').value = '';
+    loadStockOutData();
+}
+
 function exportStockOutReport() {
     const startDate = document.getElementById('stockOutStartDate').value;
     const endDate = document.getElementById('stockOutEndDate').value;
@@ -4398,7 +4631,7 @@ function loadReturnsData() {
     $('#returnsTable tbody').empty();
     $('#returnsSummary').hide();
 
-    // Set default date range (last 30 days)
+    // Set default date range (last 30 days) - but allow showing all if no dates
     const endDate = new Date();
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - 30);
@@ -4412,7 +4645,8 @@ function loadReturnsData() {
         type: 'POST',
         data: {
             start_date: startDate.toISOString().split('T')[0],
-            end_date: endDate.toISOString().split('T')[0]
+            end_date: endDate.toISOString().split('T')[0],
+            show_all: false
         },
         success: function(response) {
             $('#returnsLoading').hide();
@@ -4512,7 +4746,12 @@ function updateReturnsSummary(summary) {
 function filterReturnsReport() {
     const startDate = document.getElementById('returnsStartDate').value;
     const endDate = document.getElementById('returnsEndDate').value;
-    if (!startDate || !endDate) return;
+    
+    // If no dates are selected, show all records
+    if (!startDate && !endDate) {
+        loadReturnsData();
+        return;
+    }
     $('#returnsLoading').show();
     $('#returnsNoData').hide();
     $('#returnsSummary').hide();
@@ -4592,6 +4831,12 @@ function searchReturnsTable() {
 }
 
 function refreshReturnsData() {
+    loadReturnsData();
+}
+
+function clearReturnsDates() {
+    document.getElementById('returnsStartDate').value = '';
+    document.getElementById('returnsEndDate').value = '';
     loadReturnsData();
 }
 
@@ -4681,6 +4926,17 @@ function optimizeTablePerformance() {
     
     images.forEach(img => imageObserver.observe(img));
 }
+
+// Time update function for header
+function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString();
+    document.getElementById('currentTime').textContent = timeString;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+updateTime(); // Initial call
 
 function loadLowStockItems() {
     $('#lowStockLoading').show();

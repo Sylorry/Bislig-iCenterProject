@@ -451,7 +451,7 @@ require_once 'db.php';
 <body>
 <!-- Enhanced Header -->
 <header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
-  <div class="flex items-center justify-between px-6 py-4">
+  <div class="flex justify-between items-center px-8 py-6 space-x-4">
     <div class="flex items-center space-x-6">
       <div class="ml-2 mr-10 text-sm text-white flex items-center space-x-6">
         <img src="images/iCenter.png" alt="Logo" class="h-20 w-auto border-2 border-white rounded-lg shadow-lg mr-4" />

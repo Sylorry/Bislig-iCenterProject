@@ -17,7 +17,73 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
   <title>Reserved Products - Admin Dashboard</title>
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
   <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+    }
+    
+    /* Enhanced Header */
+    header {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    
+    /* Header specific styles */
+    .header-logo {
+      height: 65px;
+      width: auto;
+      border: 2px solid white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header-date {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .header-time {
+      font-size: 12px;
+      opacity: 0.8;
+    }
+    
+    .admin-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .admin-avatar:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .admin-avatar i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+    }
+    
+    .admin-label {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    
     .status-badge {
       @apply px-3 py-1.5 rounded-full text-sm font-semibold transition-all duration-200;
     }
@@ -69,9 +135,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     .table-container::-webkit-scrollbar-thumb {
       background: #888;
       border-radius: 4px;
-    }
-    .table-container::-webkit-scrollbar-thumb:hover {
-      background: #555;
     }
     .table-container::-webkit-scrollbar-thumb:hover {
       background: #555;
@@ -351,6 +414,31 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
   </style>
 </head>
 <body class="bg-gray-50 font-sans min-h-screen p-6">
+
+<!-- Enhanced Header -->
+<header class="bg-gradient-to-r from-[#1a1a1a] to-[#2d2d2d] shadow-lg border-b border-white/10 sticky top-0 z-20 backdrop-blur-sm">
+    <div class="flex justify-between items-center px-4 py-3">
+        <div class="flex items-center">
+            <img src="images/iCenter.png" alt="Logo" class="header-logo mr-3" />
+            <div class="flex flex-col">
+                <span class="header-date text-white"><?php echo date('l, F j, Y'); ?></span>
+                <div class="header-time text-white flex items-center">
+                    <i class="ri-time-line mr-1"></i>
+                    <span id="currentTime"></span>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center ml-auto">
+            <div class="flex flex-col items-center cursor-pointer group">
+                <div class="admin-avatar">
+                    <i class="ri-user-line text-black"></i>
+                </div>
+                <span class="admin-label text-white group-hover:text-blue-300 transition-colors duration-300">ADMIN</span>
+            </div>
+        </div>
+    </div>
+</header>
+
   <!-- Toast -->
   <div id="toast" class="fixed top-6 right-6 z-50 hidden bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transition-all duration-300 flex items-center">
     <i class="fas fa-check-circle mr-2"></i>
@@ -408,7 +496,8 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
           <h3 class="text-2xl font-bold text-gray-800">Reservation Details</h3>
         </div>
         <div class="flex items-center space-x-3">
-          <span id="viewReservationIdBadge" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-mono font-semibold"></span>
+          <span class="text-gray-700 font-bold text-lg">Reservation No.</span>
+          <span id="viewReservationIdBadge" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-lg font-mono font-bold"></span>
           <button onclick="closeViewModal()" class="text-gray-500 hover:text-black text-2xl transition-colors">
             <i class="fas fa-times"></i>
           </button>
@@ -579,11 +668,10 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
           Back to Dashboard
         </a>
       </div>
-      <img src="images/iCenter.png" alt="Logo" class="h-24" />
     </div>
     <div class="mt-4">
-      <h1 class="text-3xl font-bold text-gray-800">Reserved Products</h1>
-      <p class="text-gray-600 mt-2">Manage and track all product reservations and their status</p>
+      <h1 class="text-5xl font-bold text-black text-center" style="font-family: 'Times New Roman', Times, serif;">Reserved Products</h1>
+
     </div>
   </div>
 
@@ -686,7 +774,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
                         </div>
                       </td>';
                 echo '<td class="border border-gray-300 px-6 py-3">' . htmlspecialchars($res['address']) . '</td>';
-                $status = htmlspecialchars($res['status'] ?? 'pending');
+                $status = htmlspecialchars($res['STATUS'] ?? 'pending');
                 
                 // Debug logging
                 error_log("reserved.php: Reservation ID " . $res['reservation_id'] . " has status: " . $status);
@@ -939,17 +1027,34 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
       });
     }
 
-    // Add click outside to close modal
+    // Modal event listeners
+    document.getElementById('viewModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeViewModal();
+      }
+    });
+
     document.getElementById('statusModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeStatusModal();
       }
     });
 
-    // Add ESC key to close modal - consolidated event listener
+    document.getElementById('archiveModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeArchiveModal();
+      }
+    });
+
+    document.getElementById('imgModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeImgModal();
+      }
+    });
+
+    // ESC key to close modals
     document.addEventListener('keydown', function(e) {
       if (e.key === "Escape") {
-        // Check which modal is currently open and close it
         const viewModal = document.getElementById('viewModal');
         const statusModal = document.getElementById('statusModal');
         const archiveModal = document.getElementById('archiveModal');
@@ -1341,17 +1446,17 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
           // Display products in the list with enhanced styling
           products.forEach((product, index) => {
             const productDiv = document.createElement('div');
-            productDiv.className = 'bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow product-card';
+            productDiv.className = 'bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow product-card h-24 flex items-center';
             productDiv.innerHTML = `
-              <div class="flex items-start justify-between">
+              <div class="flex items-center justify-between w-full">
                 <div class="flex-1">
                   <div class="flex items-center mb-2">
                     <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-1 rounded-full mr-2">#${index + 1}</span>
-                    <p class="font-semibold text-gray-800">${product.name}</p>
+                    <p class="font-semibold text-gray-800 truncate">${product.name}</p>
                   </div>
-                  ${product.brand || product.model ? `<p class="text-sm text-gray-600">${product.brand} ${product.model}</p>` : ''}
+                  ${product.brand || product.model ? `<p class="text-sm text-gray-600 truncate">${product.brand} ${product.model}</p>` : ''}
                 </div>
-                <div class="text-right ml-3">
+                <div class="text-right ml-3 flex-shrink-0">
                   <p class="font-mono font-bold text-gray-800 text-lg">₱${product.price.toLocaleString('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
@@ -1393,11 +1498,13 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
           
           // Set status with appropriate styling
           const statusElement = document.getElementById('viewStatus');
-          const statusText = data.status === 'completed' ? 'Completed' : 'Pending';
-          const statusClass = data.status === 'completed' ? 'status-completed' : 'status-not_completed';
+          // Use STATUS (uppercase) from database, fallback to status (lowercase) for compatibility
+          const reservationStatus = data.STATUS || data.status || 'pending';
+          const statusText = reservationStatus === 'completed' ? 'Completed' : 'Pending';
+          const statusClass = reservationStatus === 'completed' ? 'status-completed' : 'status-not_completed';
           statusElement.innerHTML = `
             <span class="status-badge ${statusClass} inline-flex items-center">
-              <i class="fas ${data.status === 'completed' ? 'fa-check-circle' : 'fa-clock'} mr-2"></i>
+              <i class="fas ${reservationStatus === 'completed' ? 'fa-check-circle' : 'fa-clock'} mr-2"></i>
               ${statusText}
             </span>
           `;
@@ -1455,6 +1562,30 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 
     // Function to reset modal state
     function resetModalState() {
+      const modal = document.getElementById('viewModal');
+      console.log('Closing view modal'); // Debug log
+      console.log('Modal before closing:', modal ? modal.className : 'Modal not found'); // Debug log
+      
+      if (modal) {
+        modal.classList.remove('flex');
+        modal.classList.add('hidden');
+        console.log('Modal after closing:', modal.className); // Debug log
+      }
+      
+      // Clear any stored reservation data
+      window.currentReservation = null;
+      
+      // Re-enable body scrolling
+      document.body.style.overflow = '';
+      
+      // Force a small delay to ensure state is properly reset
+      setTimeout(() => {
+        console.log('Modal state after delay:', modal ? modal.className : 'Modal not found'); // Debug log
+      }, 100);
+    }
+
+    // Function to close view modal
+    function closeViewModal() {
       const modal = document.getElementById('viewModal');
       console.log('Closing view modal'); // Debug log
       console.log('Modal before closing:', modal ? modal.className : 'Modal not found'); // Debug log
@@ -1598,28 +1729,7 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
       console.log('=== End handleProofImage Debug ===');
     }
 
-    function closeViewModal() {
-      const modal = document.getElementById('viewModal');
-      console.log('Closing view modal'); // Debug log
-      console.log('Modal before closing:', modal ? modal.className : 'Modal not found'); // Debug log
-      
-      if (modal) {
-        modal.classList.remove('flex');
-        modal.classList.add('hidden');
-        console.log('Modal after closing:', modal.className); // Debug log
-      }
-      
-      // Clear any stored reservation data
-      window.currentReservation = null;
-      
-      // Re-enable body scrolling
-      document.body.style.overflow = '';
-      
-      // Force a small delay to ensure state is properly reset
-      setTimeout(() => {
-        console.log('Modal state after delay:', modal ? modal.className : 'Modal not found'); // Debug log
-      }, 100);
-    }
+
 
     // Add click outside to close modal
     document.getElementById('viewModal').addEventListener('click', function(e) {
@@ -1632,27 +1742,6 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     document.getElementById('imgModal').addEventListener('click', function(e) {
       if (e.target === this) {
         closeImgModal();
-      }
-    });
-
-    // Add ESC key to close modal - consolidated event listener
-    document.addEventListener('keydown', function(e) {
-      if (e.key === "Escape") {
-        // Check which modal is currently open and close it
-        const viewModal = document.getElementById('viewModal');
-        const statusModal = document.getElementById('statusModal');
-        const archiveModal = document.getElementById('archiveModal');
-        const imgModal = document.getElementById('imgModal');
-        
-        if (viewModal && viewModal.classList.contains('flex')) {
-          closeViewModal();
-        } else if (statusModal && statusModal.classList.contains('flex')) {
-          closeStatusModal();
-        } else if (archiveModal && archiveModal.classList.contains('flex')) {
-          closeArchiveModal();
-        } else if (imgModal && imgModal.classList.contains('flex')) {
-          closeImgModal();
-        }
       }
     });
 
@@ -1702,19 +1791,23 @@ header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
       });
     }
 
-    // Add click outside to close archive modal
-    document.getElementById('archiveModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeArchiveModal();
-      }
-    });
 
-    // Add click outside to close status modal
-    document.getElementById('statusModal').addEventListener('click', function(e) {
-      if (e.target === this) {
-        closeStatusModal();
-      }
-    });
+
+    // Real-time clock functionality
+    function updateTime() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+      document.getElementById('currentTime').textContent = timeString;
+    }
+
+    // Update time every second
+    setInterval(updateTime, 1000);
+    updateTime(); // Initial call
   </script>
 </body>
 </html>
